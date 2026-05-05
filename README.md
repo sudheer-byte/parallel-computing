@@ -13,7 +13,7 @@
 ├── serial_md.cpp                                        # Baseline serial implementation
 ├── parallel_md.cpp                                      # OpenMP parallel version
 ├── parallel_md_cutoff.cpp                               # OpenMP + cell-list optimization
-├── Parallel_Molecular_Dynamics_Particle_Simulation.docx # Final report
+├── Sudheer Sunkara Parallel Molecular Dynamics Particle Simulation Report.pdf # Final report
 └── README.md
 ```
 
