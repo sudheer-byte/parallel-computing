@@ -1,4 +1,4 @@
-# ⚛️ Parallel Molecular Dynamics Particle Simulation
+# Parallel Molecular Dynamics Particle Simulation
 
 > A 2D Lennard-Jones particle simulator parallelized with OpenMP — featuring serial, parallel, and cell-list cutoff implementations.
 
@@ -8,7 +8,7 @@
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 .
@@ -21,7 +21,7 @@
 
 ---
 
-## 🔬 Overview
+##  Overview
 
 This project implements a **2D Molecular Dynamics simulator** using the Lennard-Jones interaction model to study how particles move and interact inside a bounded box — and how parallel programming improves simulation performance.
 
@@ -35,7 +35,7 @@ Three implementations are provided:
 
 ---
 
-## ⚙️ Simulation Parameters
+##  Simulation Parameters
 
 | Parameter | Value | Description |
 |---|---|---|
@@ -49,9 +49,9 @@ Three implementations are provided:
 
 ---
 
-## 🛠️ Build
+##  Build
 
-> **Requirements:** Linux or WSL · g++ (C++11+) · OpenMP · 4–8 CPU cores recommended
+> **Requirements:** Linux or WSL · g++ (C++11+) . recommended
 
 ```bash
 # Serial
@@ -66,7 +66,7 @@ g++ -O3 -fopenmp -o parallel_md_cutoff parallel_md_cutoff.cpp
 
 ---
 
-## 🚀 Usage
+##  Usage
 
 ```bash
 ./serial_md          <num_particles> <num_steps>
@@ -77,7 +77,7 @@ g++ -O3 -fopenmp -o parallel_md_cutoff parallel_md_cutoff.cpp
 **Defaults** (if no arguments given): `num_particles=1000`, `num_steps=100`, `num_threads=4`
 
 **Stable particle counts:** 200, 500, 1000, 2000  
-**⚠️ Unstable (do not use):** N ≥ 5000 — forces diverge at current timestep/density settings.
+**Unstable (do not use):** N ≥ 5000 — forces diverge at current timestep/density settings.
 
 ### Example Runs
 
@@ -106,35 +106,8 @@ g++ -O3 -fopenmp -o parallel_md_cutoff parallel_md_cutoff.cpp
 ./parallel_md 2000 500 4
 ```
 
----
 
-## 📊 Performance Results
-
-> Benchmarked at N=1000 particles, 500 steps
-
-| Version | Threads | Time (s) | Speedup vs Serial |
-|---|---|---|---|
-| Serial Baseline | — | 1.64871 | 1.00× |
-| OpenMP Parallel | 1 | 1.63353 | 1.01× |
-| OpenMP Parallel | 2 | 0.93386 | 1.77× |
-| OpenMP Parallel | 4 | 0.55999 | 2.95× |
-| OpenMP Parallel | 8 | 0.37528 | **4.39×** |
-| OpenMP Parallel | 16 | 0.44121 | 3.74× |
-| Cell-List Cutoff | 1 | 0.16069 | 10.26× |
-| Cell-List Cutoff | 2 | 0.10800 | **15.27× ✅ Best** |
-| Cell-List Cutoff | 4 | 0.10834 | 15.22× |
-| Cell-List Cutoff | 8 | 0.11765 | 14.01× |
-| Cell-List Cutoff | 16 | 0.25138 | 6.56× |
-
-**Key Findings:**
-- OpenMP alone peaks at **8 threads (4.39×)**
-- Cell-list peaks at **2 threads (15.27×)** — the algorithmic improvement dominates
-- 16 threads underperforms 8 in both versions due to thread management overhead
-- **Algorithmic optimization outperforms raw parallelism**
-
----
-
-## 🧪 Output Format
+##  Output Format
 
 Every 10 simulation steps:
 ```
@@ -149,7 +122,7 @@ Threads used: <N>
 
 ---
 
-## 🧲 Physical Model
+##  Physical Model
 
 **Force:** Lennard-Jones pairwise interaction
 ```
@@ -169,7 +142,7 @@ F = 24 × ε × (2·r⁻¹² − r⁻⁶) / r²
 
 ---
 
-## 🔒 Race Condition Solution
+## Race Condition Solution
 
 Newton's 3rd law requires updating **two particles per pair interaction**, which causes data races in naive parallel implementations.
 
@@ -177,7 +150,7 @@ Newton's 3rd law requires updating **two particles per pair interaction**, which
 
 ---
 
-## ⚠️ Known Limitations
+## Known Limitations
 
 - 2D simulation only (not 3D)
 - Euler integration (not Velocity-Verlet)
