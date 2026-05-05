@@ -1,7 +1,5 @@
 # Parallel Molecular Dynamics Particle Simulation
 
-> A 2D Lennard-Jones particle simulator parallelized with OpenMP — featuring serial, parallel, and cell-list cutoff implementations.
-
 **Course:** Concurrent and Parallel Programming (Spring 2026)  
 **Author:** Sudheer Sunkara  
 **Type:** Individual Final Project
