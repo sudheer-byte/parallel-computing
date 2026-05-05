@@ -29,7 +29,7 @@ Three implementations are provided:
 |---|---|
 | `serial_md.cpp` | Baseline serial. Uses Newton's 3rd law for efficient pairwise force computation. Single-threaded. |
 | `parallel_md.cpp` | OpenMP parallelization with thread-private force buffers, dynamic scheduling for forces, static scheduling for particle updates. |
-| `parallel_md_cutoff.cpp` | OpenMP + 8×8 cell-list grid. Only checks particle pairs within the cutoff radius, reducing complexity from **O(N²) → O(N)**. |
+| `parallel_md_cutoff.cpp` | OpenMP + 8×8 cell-list grid. Only checks particle pairs within the cutoff radius, reducing the force-checking cost from approximately O(N²) toward O(N) for fairly uniform particle distributions. |
 
 ---
 
@@ -80,8 +80,12 @@ g++ -O3 -fopenmp -o parallel_md_cutoff parallel_md_cutoff.cpp
 ### Example Runs
 
 ```bash
-# Serial baseline
+
+# Serial — vary particles
+./serial_md 200 500
+./serial_md 500 500
 ./serial_md 1000 500
+./serial_md 2000 500
 
 # Parallel — vary threads (N=1000)
 ./parallel_md 1000 500 1
@@ -150,7 +154,7 @@ Newton's 3rd law requires updating **two particles per pair interaction**, which
 
 ## Known Limitations
 
-- 2D simulation only (not 3D)
+- 2D simulation only
 - Euler integration (not Velocity-Verlet)
 - No periodic boundary conditions (reflective walls only)
 - Temperature in reduced units (not physical Kelvin)
