@@ -49,7 +49,7 @@ Three implementations are provided:
 
 ##  Build
 
-> **Requirements:** Linux or WSL, g++ with OpenMP support recommended
+> **Requirements:** Linux or WSL, with g++ and OpenMP support recommended
 
 ```bash
 # Serial
