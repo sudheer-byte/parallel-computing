@@ -71,3 +71,66 @@ g++ -O3 -fopenmp -o parallel_md parallel_md.cpp
 
 # Parallel with cell-list cutoff
 g++ -O3 -fopenmp -o parallel_md_cutoff parallel_md_cutoff.cpp
+
+6. RUN COMMANDS
+Bash# Serial
+./serial_md <num_particles> <num_steps>
+
+# Parallel
+./parallel_md <num_particles> <num_steps> <num_threads>
+
+# Parallel with cutoff
+./parallel_md_cutoff <num_particles> <num_steps> <num_threads>
+Arguments:
+
+num_particles: Number of particles (e.g. 200, 500, 1000, 2000)
+num_steps: Number of simulation time steps (e.g. 100, 500)
+num_threads: Number of OpenMP threads (e.g. 1, 2, 4, 8, 16)
+
+Default values: 1000 particles, 100 steps, 4 threads.
+7. EXAMPLE RUNS
+Bash# Serial baseline
+./serial_md 1000 500
+
+# Serial particle scaling
+./serial_md 200 500
+./serial_md 500 500
+./serial_md 1000 500
+./serial_md 2000 500
+
+# Parallel - vary threads (N=1000)
+./parallel_md 1000 500 1
+./parallel_md 1000 500 2
+./parallel_md 1000 500 4
+./parallel_md 1000 500 8
+./parallel_md 1000 500 16
+
+# Cell-list cutoff - vary threads (N=1000)
+./parallel_md_cutoff 1000 500 1
+./parallel_md_cutoff 1000 500 2
+./parallel_md_cutoff 1000 500 4
+./parallel_md_cutoff 1000 500 8
+./parallel_md_cutoff 1000 500 16
+8. OUTPUT FORMAT
+Every 10 simulation steps, each program prints:
+textStep <N>  Kinetic Energy=<KE>  Potential Energy=<PE>  Total Energy=<KE+PE>  Temperature (reduced)=<T>
+At the end of each run:
+textTotal wall time: <seconds>
+Threads used: <N>   (parallel versions only)
+9. PHYSICAL MODEL
+
+Force Model: Lennard-Jones style force between particle pairs:
+F = 24 * epsilon * (2*r^-12 - r^-6) / r^2
+Integration: Euler integration with fixed time step DT = 0.0005
+Boundaries: Reflective (particles bounce off walls)
+Energy Tracking: Kinetic, Potential, Total Energy, and reduced Temperature (KE / N)
+Initialization: Grid-based positions + random velocities (Mersenne Twister, seed = 42)
+
+10. RACE CONDITION SOLUTION
+Newton’s third law updates two particles per pair interaction.
+Direct shared writes would cause data races.
+Solution used in parallel_md.cpp and parallel_md_cutoff.cpp:
+
+Each OpenMP thread writes forces into its own private buffer
+After the parallel loop, private buffers are summed into the main force array
+No locks, no atomics, no race conditions
